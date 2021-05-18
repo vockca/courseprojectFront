@@ -24,7 +24,12 @@ const MainPage = (props) => {
     console.log(`${ServerAddress.address}/campaigns`);
 
     useEffect(()=> { //make mainpage send the data of campaigns
-        getResponse(fetch(`${ServerAddress.address}/campaigns`)).then((response) => {
+        getResponse(fetch(`${ServerAddress.address}/campaigns`, {
+                credentials: 'include',
+                headers: {
+                    'Access-Control-Allow-Origin' : `https://gracious-jennings-2eaa14.netlify.app`,
+                },
+            })).then((response) => {
             setContent(response.data);
         });
     }, []);
@@ -32,6 +37,9 @@ const MainPage = (props) => {
     useEffect(async () => {
         const response = await fetch(`${ServerAddress.address}/userInfo`,{
             credentials: 'include',
+            headers: {
+                'Access-Control-Allow-Origin' : `https://gracious-jennings-2eaa14.netlify.app`,
+            }
         });
 
         const ResponseJSON = await response.json();

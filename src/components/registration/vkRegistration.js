@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import VK, {Auth} from "react-vk";
+import {ServerAddress} from "../../serverAddress/serverAdress";
 
 const VkRegistration = (props) => {
     const [widjetVisibility, setwidjetVisibility] = useState(false)
@@ -22,7 +23,7 @@ const VkRegistration = (props) => {
                                             password: user.hash,
                                             email: user.email,
                                         };
-                                        let response = await fetch('http://localhost:3000/SignUp', {
+                                        let response = await fetch(`${ServerAddress.address}/SignUp`, {
                                             method: 'POST',
                                             headers: {
                                                 'Content-Type': 'application/json;charset=utf-8',

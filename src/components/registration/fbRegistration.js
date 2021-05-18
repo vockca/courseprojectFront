@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import FacebookLogin from 'react-facebook-login';
+import {ServerAddress} from "../../serverAddress/serverAdress";
 
 
 
@@ -15,7 +16,7 @@ const FbRegistration = (props) => {
             password: user.id,
             email: user.email,
         };
-        let response = await fetch('http://localhost:3000/SignUp', {
+        let response = await fetch(`${ServerAddress.address}/SignUp`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',

@@ -1,0 +1,27 @@
+.mainContainer {
+    border: saddlebrown solid 2px;
+}
+
+.campaignContainers {
+    border: black solid 2px;
+}
+
+.highRatedCompaniesContainer {
+    display: inline-block;
+    width: 50%;
+}
+
+.latestCompaniesContainer {
+    display: inline-block;
+    width: 50%;
+}
+
+.highRatedCompaniesContainerHeader {
+    width: 50%;
+    margin: auto;
+}
+
+.latestCompaniesContainerHeader {
+    width: 50%;
+    margin: auto;
+}

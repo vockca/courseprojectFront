@@ -1,0 +1,23 @@
+.header {
+    display: block;
+    height: 50px;
+    background-color: darkgray;
+}
+
+.mainPage {
+    display: inline-block;
+    float: left;
+    margin: 5px;
+}
+
+.signingUp {
+    display: inline-block;
+    float: right;
+    margin: 5px;
+}
+
+.loggingIn {
+    display: inline-block;
+    float: right;
+    margin: 5px;
+}

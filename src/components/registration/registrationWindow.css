@@ -1,0 +1,23 @@
+form{
+    color: green;
+    display: flex;
+    flex-flow: column;
+    width: 35%;
+    align-items: center;
+}
+
+input{
+    border-radius: 5px;
+    height: 25px;
+}
+label{
+}
+
+.formContainers{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+.error{
+    color: red;
+}

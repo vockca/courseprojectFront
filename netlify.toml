@@ -1,0 +1,5 @@
+# A basic redirect rule
+[[redirects]]
+from = "/*"
+to = "https://gracious-jennings-2eaa14.netlify.app/"
+

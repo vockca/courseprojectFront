@@ -24,11 +24,11 @@ const VkAuth = (props) => {
                                     headers: {
                                         'Content-Type': 'application/json;charset=utf-8',
                                     },
-                                    credentials: 'include',
                                     body: JSON.stringify(values),
                                 });
 
                                 let jsonResponse = await response.json();
+                                localStorage.setItem('USER', jsonResponse.data);
                                 console.log(jsonResponse.msg);
                                 props.showServerMessage(jsonResponse.msg, 2000);
                             },

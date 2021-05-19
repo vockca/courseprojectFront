@@ -56,19 +56,18 @@ const LogInForm = (props) => {
                             headers: {
                                 'Content-Type': 'application/json;charset=utf-8',
                             },
-                            credentials: 'include',
                             body: JSON.stringify(values),
                         });
                         let jsonResponse = await response.json();
                         console.log(jsonResponse.msg);
                         console.log(jsonResponse.data);
+                        localStorage.setItem('USER', jsonResponse.data);
 
                         showServerMessage(jsonResponse.msg, 2000);
 
                         if (jsonResponse.data) {
                             redirectToMainPage();
                         }
-
 
 
                         actions.setSubmitting(false);

@@ -16,11 +16,11 @@ const FacebookAuth = (props) => {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
             },
-            credentials: 'include',
             body: JSON.stringify(values),
         });
 
         let jsonResponse = await response.json();
+        localStorage.setItem('USER', jsonResponse.data);
         props.showServerMessage(jsonResponse.msg, 2000);
     }
 

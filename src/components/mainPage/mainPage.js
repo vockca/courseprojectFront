@@ -21,32 +21,30 @@ async function getResponse (fetch){
 
 const MainPage = (props) => {
     const [content, setContent] = useState([]);
-    console.log(`${ServerAddress.address}/campaigns`);
 
     useEffect(()=> { //make mainpage send the data of campaigns
-        getResponse(fetch(`${ServerAddress.address}/campaigns`, {
-                credentials: 'include',
-                headers: {
-                    'Access-Control-Allow-Origin' : `https://gracious-jennings-2eaa14.netlify.app`,
-                },
-            })).then((response) => {
+        getResponse(fetch(`${ServerAddress.address}/campaigns`)).then((response) => {
             setContent(response.data);
         });
     }, []);
 
     useEffect(async () => {
-        const response = await fetch(`${ServerAddress.address}/userInfo`,{
-            credentials: 'include',
+        let userToken = {
+            token: localStorage.getItem('USER'),
+        }
+        const response = await fetch(`${ServerAddress.address}/userInfo`, {
+            method: 'POST',
             headers: {
-                'Access-Control-Allow-Origin' : `https://gracious-jennings-2eaa14.netlify.app`,
-            }
-        });
+            'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(userToken),
+        },);
 
         const ResponseJSON = await response.json();
         //make a way to cover the answer if user not authorized
         if (ResponseJSON.data) {
             props.defineCurrentUser(ResponseJSON.data);
-        };
+        }
     }, []);
 
 

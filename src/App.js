@@ -14,6 +14,7 @@ import MainPage from "./components/mainPage/mainPage";
 import Header from "./components/header/header";
 import CreateCampaignForm from "./components/createCampaign/createCampaign";
 import Profile from "./components/profile/profile";
+import {ServerAddress} from "./serverAddress/serverAdress";
 
 
 //make history here and pass it through components
@@ -31,11 +32,12 @@ const App = () => {
     }
 
     const unauthorizeUser = () => {
+        console.log('111');
         setUserInfo({
             isAuthorized: false,
             user: null,
         })
-        document.cookie = "USER=unauthorized"
+        localStorage.setItem('USER', 'unAuthorized');
     }
 
     console.log(userInfo);
@@ -69,14 +71,19 @@ const App = () => {
                         </Route>
 
                         <Route exact path={"/myProfile"}>
-                            <Profile userInfo={userInfo}/>
+                            <Profile defineCurrentUser={defineCurrentUser} userInfo={userInfo}/>
                         </Route>
                     </Switch>
                 </div>
             </Router>
-            <button onClick={ () => console.log(document.cookie)}>cookie</button>
+            <button onClick={ () => console.log(JSON.stringify(localStorage.getItem('USER')))}>cookie</button>
+            <button onClick={ async () => {
+
+                localStorage.setItem('USER', 'unAuthorized');
+
+            }}>clear local</button>
         </div>
-  );
+    );
 }
 
 export default App;

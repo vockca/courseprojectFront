@@ -19,7 +19,7 @@ const CampaignDetails = (props) => {
 
     useEffect(async () => {
         let response = await fetch(`http://localhost:3000${location.pathname}`);
-        let responseJSON = await response.json()
+        let responseJSON = await response.json();
         responseJSON.data.videoId = getVideoId(await responseJSON.data['campaign_video']);
         setActiveCampaign(await responseJSON.data);
     }, []);

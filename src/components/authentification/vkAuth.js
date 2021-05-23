@@ -28,7 +28,10 @@ const VkAuth = (props) => {
                                 });
 
                                 let jsonResponse = await response.json();
-                                localStorage.setItem('USER', jsonResponse.data);
+                                if(jsonResponse.data) {
+                                    localStorage.setItem('USER', jsonResponse.data);
+                                    props.redirectToMainPage()
+                                }
                                 console.log(jsonResponse.msg);
                                 props.showServerMessage(jsonResponse.msg, 2000);
                             },

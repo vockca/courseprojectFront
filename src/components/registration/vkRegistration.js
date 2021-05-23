@@ -32,6 +32,10 @@ const VkRegistration = (props) => {
                                         });
 
                                         let jsonResponse = await response.json();
+
+                                        if (jsonResponse.data) {
+                                            props.redirectToLogIn();
+                                        }
                                         console.log(jsonResponse.msg);
                                         props.showServerMessage(jsonResponse.msg, 2000);
                                 },

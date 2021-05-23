@@ -25,3 +25,49 @@
     width: 50%;
     margin: auto;
 }
+
+.campaignGallery {
+    height: 300px;
+    width: inherit;
+    display: flex;
+}
+
+.campaignGallery > img {
+    height: inherit;
+    width: 100%;
+}
+.tagsShowers {
+    border: none !important;
+    --tags-border-color: #DDD;
+    --tags-hover-border-color: #CCC;
+    --tags-focus-border-color: #3595f6;
+    --tag-bg: #E5E5E5;
+    --tag-hover: #D3E2E2;
+    --tag-text-color: black;
+    --tag-text-color--edit: black;
+    --tag-pad: 0.3em 0.5em;
+    --tag-inset-shadow-size: 1.1em;
+    --tag-invalid-color: #D39494;
+    --tag-invalid-bg: rgba(211, 148, 148, 0.5);
+    --tag-remove-bg: rgba(211, 148, 148, 0.3);
+    --tag-remove-btn-color: black;
+    --tag-remove-btn-bg: none;
+    --tag-remove-btn-bg--hover: #c77777;
+    --input-color: inherit;
+    --tag--min-width: 1ch;
+    --tag--max-width: auto;
+    --tag-hide-transition: 0.3s;
+    --placeholder-color: rgba(0, 0, 0, 0.4);
+    --placeholder-color-focus: rgba(0, 0, 0, 0.25);
+    --loader-size: .8em;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding: 0;
+    line-height: normal;
+    cursor: text;
+    outline: 0;
+    position: relative;
+    box-sizing: border-box;
+    transition: .1s;
+}

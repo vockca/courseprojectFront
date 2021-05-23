@@ -7,6 +7,8 @@ import ServerMsgHandler from "../serverMsgHandler/serverMsgHandler";
 import VkRegistration from "./vkRegistration";
 import FbRegistration from "./fbRegistration";
 import {ServerAddress} from "../../serverAddress/serverAdress";
+import {useHistory} from "react-router";
+
 
 const MyTextInput = ({ label, ...props }) => {
     const [field, meta] = useField(props);
@@ -23,11 +25,17 @@ const MyTextInput = ({ label, ...props }) => {
 };
 
 const SignupForm = (props) => {
+    const history = useHistory();
+
     const [serverMessage, setServerMessage] = useState(false)
 
     const showServerMessage = (msg, duration) => {
         setServerMessage(msg);
         setTimeout(() => setServerMessage(false), duration);
+    }
+
+    const redirectToLogIn = () => {
+        history.push("/LogIn");
     }
 
     return(
@@ -57,9 +65,13 @@ const SignupForm = (props) => {
 
                             showServerMessage(jsonResponse.msg, 2000);
 
+                            console.log(jsonResponse.data);
+                            if (jsonResponse.data) {
+                                redirectToLogIn();
+                            }
                             actions.setSubmitting(false);
                             //actions.resetForm();
-                                }}
+                        }}
 
                 >
                     <Form>
@@ -104,13 +116,13 @@ const SignupForm = (props) => {
                             type="password"
                             placeholder=""
                         />
-                        <button type={'Submit'}>Отправить</button>
+                        <button type={'Submit'}>Register</button>
                     </Form>
                 </Formik>
 
-                <VkRegistration showServerMessage={(msg, duration) => showServerMessage(msg, duration)}/>
+                <VkRegistration redirectToLogIn={redirectToLogIn} showServerMessage={(msg, duration) => showServerMessage(msg, duration)}/>
 
-                <FbRegistration showServerMessage={(msg, duration) => showServerMessage(msg, duration)}/>
+                <FbRegistration redirectToLogIn={redirectToLogIn} showServerMessage={(msg, duration) => showServerMessage(msg, duration)}/>
         </div>
             {serverMessage ? <ServerMsgHandler text={serverMessage}>{serverMessage}</ServerMsgHandler> : null}
     </div>

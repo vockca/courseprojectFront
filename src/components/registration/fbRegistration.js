@@ -25,7 +25,9 @@ const FbRegistration = (props) => {
         });
 
         let jsonResponse = await response.json();
-        console.log(jsonResponse.msg);
+        if (jsonResponse.data) {
+            props.redirectToLogIn();
+        }
         props.showServerMessage(jsonResponse.msg, 2000);
     }
 

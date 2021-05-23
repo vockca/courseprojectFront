@@ -1,0 +1,13 @@
+.profileInputs {
+    color: red;
+    display: inline-block;
+    margin: 2px;
+}
+
+.profileLabels {
+    margin: 2px;
+}
+
+.profileContainers {
+    display: flex;
+}

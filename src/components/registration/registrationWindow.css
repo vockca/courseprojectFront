@@ -21,3 +21,12 @@ label{
 .error{
     color: red;
 }
+
+.tagify__input {
+    height: 25px;
+    border-color: black;
+}
+.tagify {
+    border: solid 2px black !important;
+    border-radius: 5px;
+}

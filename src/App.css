@@ -5,3 +5,11 @@
 .mainContainer {
 
 }
+
+.serverMessage {
+    position: fixed;
+    left: 40%;
+    top: 30%;
+    width: 600px;
+    height: 400px;
+}

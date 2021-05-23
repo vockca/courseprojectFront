@@ -3,7 +3,7 @@ import React from "react";
 
 const ServerMsgHandler = (props) => {
     return(
-        <div>{props.children}</div>
+        <div className={'serverMessage'}>{props.children}</div>
     )
 }
 

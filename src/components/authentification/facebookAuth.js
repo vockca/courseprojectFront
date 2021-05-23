@@ -20,7 +20,11 @@ const FacebookAuth = (props) => {
         });
 
         let jsonResponse = await response.json();
-        localStorage.setItem('USER', jsonResponse.data);
+        if (jsonResponse.data) {
+            localStorage.setItem('USER', jsonResponse.data);
+            props.redirectToMainPage()
+        }
+
         props.showServerMessage(jsonResponse.msg, 2000);
     }
 

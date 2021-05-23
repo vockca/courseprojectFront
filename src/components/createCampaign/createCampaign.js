@@ -1,9 +1,16 @@
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import  {Formik, Form, useField} from "formik";
 
-import {CreateCampaignValidation} from "./createCampaignValid";
-import ServerMsgHandler from "../serverMsgHandler/serverMsgHandler";
 import {ServerAddress} from "../../serverAddress/serverAdress";
+import {CreateCampaignValidation} from "./createCampaignValidation";
+import ServerMsgHandler from "../serverMsgHandler/serverMsgHandler";
+import Tags from "@yaireo/tagify/dist/react.tagify";
+import {FileDrop} from "react-file-drop";
+
+import './createCampaign.css';
+import ImagePreview from "./imagePreview";
+import {useHistory} from "react-router";
+
 
 const MyTextInput = ({ label, ...props }) => {
     const [field, meta] = useField(props);
@@ -19,6 +26,7 @@ const MyTextInput = ({ label, ...props }) => {
     );
 };
 
+
 const MySelect = ({ label, ...props }) => {
     const [field, meta] = useField(props);
     return (
@@ -33,7 +41,12 @@ const MySelect = ({ label, ...props }) => {
 };
 
 const CreateCampaignForm = (props) => {
-    const [serverMessage, setServerMessage] = useState(false)
+    const [serverMessage, setServerMessage] = useState(false);
+    const [tagsArr, setTagsArr] = useState([]);
+
+    const [imgsURL, setImgsURL] = useState([]);
+    const history = useHistory();
+
 
     const showServerMessage = (msg, duration) => {
         setServerMessage(msg);
@@ -42,6 +55,8 @@ const CreateCampaignForm = (props) => {
 
     return(
         <div>
+            {serverMessage && <ServerMsgHandler text={serverMessage}>{serverMessage}</ServerMsgHandler>}
+
             <div className={"formContainers"}>
                 <h1>Create Campaign</h1>
                 <Formik initialValues={{
@@ -55,26 +70,35 @@ const CreateCampaignForm = (props) => {
                     tags: "",
                 }}
                         validationSchema={CreateCampaignValidation.validationScheme}
-                        onSubmit={async (values, actions) => {
+                        onSubmit= { async (values, actions) => {
+                            let objToSend = {
+                                campaign : values,
+                                user : props.userInfo,
+                                imgs : imgsURL,
+                            }
+                            objToSend.campaign.tags = tagsArr;
 
                             let response = await fetch(`${ServerAddress.address}/CreateCampaign`, {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json;charset=utf-8'
                                 },
-                                body: JSON.stringify(values),
+                                body: JSON.stringify(objToSend),
                             });
-                            console.log(JSON.stringify(values));
-                            // let jsonResponse = await response.json();
-                            // console.log(jsonResponse.msg);
-                            //
-                            // showServerMessage(jsonResponse.msg, 2000);
-                            //
-                            // actions.setSubmitting(false);
-                            //actions.resetForm();
-                        }}
 
+                            let jsonResponse = await response.json();
+
+                            showServerMessage(jsonResponse.msg, 2000);
+
+                            if (jsonResponse.data) {
+                                history.push('/');
+                            }
+
+                            actions.setSubmitting(false);
+                            actions.resetForm();
+                        }}
                 >
+
                     <Form>
                         <MyTextInput
                             label="Campaign name:"
@@ -121,11 +145,21 @@ const CreateCampaignForm = (props) => {
                             placeholder=""
                         />
 
-                        <MyTextInput
-                            label="Tags:"
-                            name="tags"
-                            type="text"
-                            placeholder=""
+                        <label htmlFor={'tags'}>Tags</label>
+                        <Tags
+                            settings={{
+                                placeholder: 'Write some tags...',
+                                delimiters: " ",
+                                trim: true,
+                            }}
+                            name={'tags'}
+                            className={'input'}
+                            whitelist={[]}
+                            onChange={ e => {
+                                setTagsArr(JSON.parse(e.detail.value).map(item => {
+                                    return item.value;
+                                }));
+                            } }
                         />
 
                         <MyTextInput
@@ -139,7 +173,33 @@ const CreateCampaignForm = (props) => {
                     </Form>
                 </Formik>
             </div>
-            {serverMessage ? <ServerMsgHandler text={serverMessage}>{serverMessage}</ServerMsgHandler> : null}
+
+            <div style={{ border: '1px solid black', width: 600, color: 'black', padding: 20 }}>
+
+                <FileDrop
+                    onDrop={ async (files, event) => {
+                        let reader = new FileReader();
+                        reader.readAsDataURL(files[files.length-1]);
+                        reader.onloadend = async () => {
+                            let response = await fetch(`${ServerAddress.address}/images`, {
+                                method: 'POST',
+                                body: JSON.stringify({data: reader.result}),
+                                headers: {'Content-Type': 'application/json'},
+                            });
+
+                            let jsonResponse = await response.json();
+
+                            setImgsURL([...imgsURL, jsonResponse.url]);
+                        };
+                    }}
+                >
+                    Drop some images here!
+                </FileDrop>
+            </div>
+
+            {imgsURL.length>0 && (
+                <ImagePreview urlArray={imgsURL}/>
+            )}
         </div>
     )
 }

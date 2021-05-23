@@ -1,82 +1,71 @@
 import React, {useState} from "react";
+import Tags from "@yaireo/tagify/dist/react.tagify"
 import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link, Redirect
+    Redirect,
 } from "react-router-dom";
 
 import './App.css';
+import '@yaireo/tagify/dist/tagify.css';
 
 import SignupForm from "./components/registration/registrationWindow";
 import LogInForm from "./components/authentification/authentificationWindow";
 import MainPage from "./components/mainPage/mainPage";
 import Header from "./components/header/header";
-import CreateCampaignForm from "./components/createCampaign/createCampaign";
-import Profile from "./components/profile/profile";
-import {ServerAddress} from "./serverAddress/serverAdress";
+import UserProfile from "./components/profile/userProfile";
+import AdminPage from "./components/admin/adminPage";
 
 
-//make history here and pass it through components
+
 const App = () => {
-    const [userInfo, setUserInfo] = useState({
-        isAuthorized: false,
-        user: null,
-    })
+    const [userInfo, setUserInfo] = useState(null);
 
     const defineCurrentUser = (userInfoObj) => {
-        setUserInfo({
-            isAuthorized: true,
-            user: userInfoObj,
-        })
+        setUserInfo(userInfoObj);
     }
 
     const unauthorizeUser = () => {
-        console.log('111');
-        setUserInfo({
-            isAuthorized: false,
-            user: null,
-        })
-        localStorage.setItem('USER', 'unAuthorized');
+        setUserInfo(null)
+        localStorage.clear();
     }
 
-    console.log(userInfo);
+
     return (
         <div className="App">
             <Router>
-                <Header userInfo={userInfo} unauthorizeUser={unauthorizeUser}/>
-
-                <Link to={'/createCampaign'}>Create Campaign</Link>
+                <Header isAuthorized={!!userInfo} userInfo={userInfo} defineCurrentUser={defineCurrentUser} unauthorizeUser={unauthorizeUser}/>
 
                 <div className={'mainContainer'}>
                     <Switch>
-                        <Route path={"/createCampaign"}>
-                            <CreateCampaignForm/>
-                        </Route>
-
                         <Route path={"/SignUp"}>
                             <SignupForm/>
                         </Route>
 
                         <Route path={"/LogIn"}>
-                            <LogInForm/>
+                            <LogInForm defineCurrentUser={defineCurrentUser}/>
                         </Route>
 
                         <Route path={"/MainPage"}>
-                            <MainPage defineCurrentUser={defineCurrentUser} />
+                            <MainPage defineCurrentUser={defineCurrentUser} userInfo={userInfo}/>
                         </Route>
 
                         <Route exact path={"/"}>
                             <Redirect to={"/MainPage"}/>
                         </Route>
 
-                        <Route exact path={"/myProfile"}>
-                            <Profile defineCurrentUser={defineCurrentUser} userInfo={userInfo}/>
+                        <Route path={"/profile/:login"}>
+                            <UserProfile defineCurrentUser={defineCurrentUser}/>
+                        </Route>
+
+                        <Route path={"/adminPage"}>
+                            <AdminPage/>
                         </Route>
                     </Switch>
                 </div>
             </Router>
-            <button onClick={ () => console.log(JSON.stringify(localStorage.getItem('USER')))}>cookie</button>
+            <button onClick={ () => console.log(localStorage.getItem('LOGIN'))}>cookie</button>
             <button onClick={ async () => {
 
                 localStorage.setItem('USER', 'unAuthorized');
@@ -85,5 +74,6 @@ const App = () => {
         </div>
     );
 }
+
 
 export default App;

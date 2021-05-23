@@ -1,37 +1,37 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Link} from "react-router-dom";
 
 import "./header.css";
+import {ServerAddress} from "../../serverAddress/serverAdress";
+import UnAuthorizedHeader from "./unAuthorizedHeader";
+import AuthorizedHeader from "./authorizedHeader";
 
 const Header = (props) => {
-    const isAuthorized = props.userInfo.isAuthorized;
 
-    return(
-        <div className={'header'}>
-            <div className={'mainPage'}>
-                <Link to={"/"}>Crown Funding</Link>
-            </div>
+    useEffect(async () => {
+        const response = await fetch(`${ServerAddress.address}/userInfo/${localStorage.getItem('LOGIN')}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Authorization': localStorage.getItem('USER'),
+                },
+            },
+        );
 
-            {!isAuthorized ?
-                (<div>
-                    <div className={'signingUp'}>
-                        <span>Don't have an account?</span>
-                        <Link to={"/SignUp"}>Sign Up</Link>
-                    </div>
+        const ResponseJSON = await response.json();
+        //make a way to cover the answer if user not authorized
+        if (ResponseJSON.data) {
+            console.log(ResponseJSON.data);
+            props.defineCurrentUser(ResponseJSON.data);
+        }
+    }, []);
 
-                    <div className={'loggingIn'}>
-                        <span>Already have an account?</span>
-                        <Link to={"/LogIn"}>Log In</Link>
-                        <span> / </span>
-                    </div>
-                </div>) :
-                (<div>
-                    <div>You are authorized as {props.userInfo['user']['user_login']}</div>
-                    <Link to={'/myProfile'}>Profile</Link>
-                    <button onClick={props.unauthorizeUser}>Log out</button>
-                </div>)}
-        </div>
-    )
+
+    if (props.isAuthorized) {
+        return <AuthorizedHeader unauthorizeUser={props.unauthorizeUser} userInfo={props.userInfo}/>
+    } else {
+        return <UnAuthorizedHeader />
+    }
 }
 
 export default Header;

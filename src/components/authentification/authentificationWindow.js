@@ -1,13 +1,7 @@
 import React, {useState} from "react";
 import  {Formik, Form, useField} from "formik";
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link,
-    Redirect,
     useHistory,
-    useLocation
 } from "react-router-dom";
 
 import {AuthValidation} from "./authValidation";
@@ -60,18 +54,20 @@ const LogInForm = (props) => {
                         });
                         let jsonResponse = await response.json();
                         console.log(jsonResponse.msg);
-                        console.log(jsonResponse.data);
-                        localStorage.setItem('USER', jsonResponse.data);
+                        console.log(jsonResponse.token);
+                        localStorage.setItem('USER', jsonResponse.token);
+                        localStorage.setItem('LOGIN', values.login);
 
                         showServerMessage(jsonResponse.msg, 2000);
 
                         if (jsonResponse.data) {
+                            props.defineCurrentUser(jsonResponse.data);
                             redirectToMainPage();
                         }
 
 
                         actions.setSubmitting(false);
-                        //actions.resetForm();
+                        actions.resetForm();
                     }}
             >
                 <Form>

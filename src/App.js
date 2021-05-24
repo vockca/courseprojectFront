@@ -69,12 +69,6 @@ const App = () => {
                     </Switch>
                 </div>
             </Router>
-            <button onClick={ () => console.log(localStorage)}>cookie</button>
-            <button onClick={ async () => {
-
-                localStorage.setItem('USER', 'unAuthorized');
-
-            }}>clear local</button>
         </div>
     );
 }

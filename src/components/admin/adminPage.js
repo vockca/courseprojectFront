@@ -16,8 +16,7 @@ const AdminPage = (props) => {
         });
 
         const ResponseJSON = await response.json();
-        //make a way to cover the answer if user not authorized
-        console.log(ResponseJSON.msg);
+
         if (ResponseJSON.data) {
             setUsersInfo(ResponseJSON.data);
             setIsDataFetched(true);
@@ -34,7 +33,6 @@ const AdminPage = (props) => {
             },
         );
         const jsonResponse = await response.json();
-        console.log(jsonResponse.msg);
 
         getUsersInfo();
     }
@@ -49,7 +47,6 @@ const AdminPage = (props) => {
             },
         );
         const jsonResponse = await response.json();
-        console.log(jsonResponse.msg);
 
         getUsersInfo();
     }
@@ -64,7 +61,6 @@ const AdminPage = (props) => {
             },
         );
         const jsonResponse = await response.json();
-        console.log(jsonResponse.msg);
 
         getUsersInfo();
     }
@@ -84,9 +80,15 @@ const AdminPage = (props) => {
         return (
             <tr key={item['user_id']}>
                 <td><Link to={`/profile/${item['user_login']}`}>{item['user_login']}</Link></td>
-                <td><button onClick={() => changeBanStatus(item['user_id'])}>{item['user_isBanned']? 'Unban' : 'Ban'}</button></td>
-                <td><button onClick={() => changeAdminStatus(item['user_id'])}>{item['user_isAdmin']?'Demote' : 'Make admin'}</button></td>
-                <td><button onClick={() => deleteUser(item['user_id'])}>delete</button></td>
+                <td>
+                    <button className='btn btn-sm btn-primary' onClick={() => changeBanStatus(item['user_id'])}>{item['user_isBanned']? 'Unban' : 'Ban'}</button>
+                </td>
+                <td>
+                    <button className='btn btn-sm btn-primary' onClick={() => changeAdminStatus(item['user_id'])}>{item['user_isAdmin']?'Demote' : 'Make admin'}</button>
+                </td>
+                <td>
+                    <button className='btn btn-sm btn-primary' onClick={() => deleteUser(item['user_id'])}>delete</button>
+                </td>
             </tr>
         )
     })

@@ -4,7 +4,6 @@ import {ServerAddress} from "../../serverAddress/serverAdress";
 
 
 const FacebookAuth = (props) => {
-    const [widjetVisibility, setwidjetVisibility] = useState(false);
 
     const responseFacebook = async (user) => {
         let values = {
@@ -20,8 +19,11 @@ const FacebookAuth = (props) => {
         });
 
         let jsonResponse = await response.json();
-        if (jsonResponse.data) {
-            localStorage.setItem('USER', jsonResponse.data);
+
+        if(jsonResponse.data) {
+            localStorage.setItem('USER', jsonResponse.token);
+            localStorage.setItem('LOGIN', user.id);
+            props.defineCurrentUser(jsonResponse.data);
             props.redirectToMainPage()
         }
 
@@ -30,9 +32,6 @@ const FacebookAuth = (props) => {
 
     return(
         <div>
-            <button onClick={()=>setwidjetVisibility(true)}>Log in with Facebook</button>
-
-            {widjetVisibility ?
                 <div>
                     <FacebookLogin
                         appId="942739773232091"
@@ -40,8 +39,8 @@ const FacebookAuth = (props) => {
                         fields="name,email,picture,first_name,last_name"
                         callback={responseFacebook}
                     />
-                    <button onClick={()=>setwidjetVisibility(false)}>Close</button>
-                </div> : null}
+                    <button className="btn btn-sm btn-primary" onClick={()=>props.setwidjetFbVisibility(false)}>Close</button>
+                </div>
 
         </div>
     )

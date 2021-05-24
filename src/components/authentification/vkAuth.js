@@ -3,13 +3,10 @@ import VK, {Auth} from "react-vk";
 import {ServerAddress} from "../../serverAddress/serverAdress";
 
 const VkAuth = (props) => {
-    const [widjetVisibility, setwidjetVisibility] = useState(false)
+
 
     return(
         <div>
-            <button onClick={()=>setwidjetVisibility(true)}>Log in with VK</button>
-
-            {widjetVisibility ?
             <div>
                 <VK apiId={7853156} onApiAvailable={() => console.log('vk widjet loaded')}>
                     <Auth options={
@@ -29,7 +26,9 @@ const VkAuth = (props) => {
 
                                 let jsonResponse = await response.json();
                                 if(jsonResponse.data) {
-                                    localStorage.setItem('USER', jsonResponse.data);
+                                    localStorage.setItem('USER', jsonResponse.token);
+                                    localStorage.setItem('LOGIN', user.uid);
+                                    props.defineCurrentUser(jsonResponse.data);
                                     props.redirectToMainPage()
                                 }
                                 console.log(jsonResponse.msg);
@@ -41,9 +40,8 @@ const VkAuth = (props) => {
                     }
                     />
                 </VK>
-                <button onClick={()=>setwidjetVisibility(false)}>Close</button>
-            </div> : null}
-
+                <button className="btn btn-sm btn-primary" onClick={()=>props.setwidjetVkVisibility(false)}>Close</button>
+            </div>
         </div>
     )
 }

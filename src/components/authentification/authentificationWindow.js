@@ -10,22 +10,25 @@ import VkAuth from "./vkAuth";
 import FacebookAuth from "./facebookAuth";
 import {ServerAddress} from "../../serverAddress/serverAdress";
 
+
 const MyTextInput = ({ label, ...props }) => {
     const [field, meta] = useField(props);
     return (
-        <>
-            <label htmlFor={props.id || props.name}>{label}</label>
-            <input className="text-input" {...field} {...props} />
+        <div className='form-input-group'>
+            <label className="form-label" htmlFor={props.id || props.name}>{label}</label>
+            <input className="text-input form-input form-control" {...field} {...props} />
             {meta.touched && meta.error ? (
                 <div className="error">{meta.error}</div>
             ) : null}
-        </>
+        </div>
     );
 };
 
 const LogInForm = (props) => {
     const history = useHistory();
     const [serverMessage, setServerMessage] = useState(false);
+    const [widjetFbVisibility, setwidjetFbVisibility] = useState(false);
+    const [widjetVkVisibility, setwidjetVkVisibility] = useState(false);
 
     const redirectToMainPage = () => {
         history.push(`/MainPage`);
@@ -79,18 +82,33 @@ const LogInForm = (props) => {
                     />
 
                     <MyTextInput
-                        label="password:"
+                        label="Password:"
                         name="password"
                         type="password"
                         placeholder=""
                     />
-                    <button type={'Submit'}>Log In</button>
+                    <div className='d-flex flex-row mt-4'>
+                        <button className="btn btn-sm btn-primary" type={'Submit'}>Log In</button>
+                        <button className="btn btn-sm btn-primary ml-2" onClick={()=>setwidjetVkVisibility(true)}>Log in with VK</button>
+                        <button className="btn btn-sm btn-primary ml-2" onClick={()=>setwidjetFbVisibility(true)}>Log in with Facebook</button>
+                    </div>
+
                 </Form>
             </Formik>
 
-            <VkAuth redirectToMainPage={redirectToMainPage} showServerMessage={showServerMessage}/>
+            {widjetVkVisibility && <VkAuth
+                setwidjetVkVisibility={setwidjetVkVisibility}
+                redirectToMainPage={redirectToMainPage}
+                showServerMessage={showServerMessage}
+                defineCurrentUser={props.defineCurrentUser}
+            />}
 
-            <FacebookAuth redirectToMainPage={redirectToMainPage} showServerMessage={showServerMessage}/>
+            {widjetFbVisibility && <FacebookAuth
+                                    setwidjetFbVisibility={setwidjetFbVisibility}
+                                    redirectToMainPage={redirectToMainPage}
+                                    showServerMessage={showServerMessage}
+                                    defineCurrentUser={props.defineCurrentUser}
+                                    />}
 
             {serverMessage ? <ServerMsgHandler text={serverMessage}>{serverMessage}</ServerMsgHandler> : null}
         </div>

@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import Tags from "@yaireo/tagify/dist/react.tagify"
 import {
     BrowserRouter as Router,
     Switch,
@@ -9,6 +8,7 @@ import {
 
 import './App.css';
 import '@yaireo/tagify/dist/tagify.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import SignupForm from "./components/registration/registrationWindow";
 import LogInForm from "./components/authentification/authentificationWindow";
@@ -35,9 +35,13 @@ const App = () => {
     return (
         <div className="App">
             <Router>
-                <Header isAuthorized={!!userInfo} userInfo={userInfo} defineCurrentUser={defineCurrentUser} unauthorizeUser={unauthorizeUser}/>
+                <Header isAuthorized={!!userInfo}
+                        userInfo={userInfo}
+                        defineCurrentUser={defineCurrentUser}
+                        unauthorizeUser={unauthorizeUser}
+                />
 
-                <div className={'mainContainer'}>
+                <div className='mainContainer ml-4 mr-4 mt-3 mb-2'>
                     <Switch>
                         <Route path={"/SignUp"}>
                             <SignupForm/>
@@ -65,7 +69,7 @@ const App = () => {
                     </Switch>
                 </div>
             </Router>
-            <button onClick={ () => console.log(localStorage.getItem('LOGIN'))}>cookie</button>
+            <button onClick={ () => console.log(localStorage)}>cookie</button>
             <button onClick={ async () => {
 
                 localStorage.setItem('USER', 'unAuthorized');

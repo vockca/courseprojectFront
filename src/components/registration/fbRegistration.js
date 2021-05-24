@@ -5,7 +5,6 @@ import {ServerAddress} from "../../serverAddress/serverAdress";
 
 
 const FbRegistration = (props) => {
-    const [widjetVisibility, setwidjetVisibility] = useState(false);
 
     const responseFacebook = async (user) => {
         console.log(user);
@@ -32,10 +31,7 @@ const FbRegistration = (props) => {
     }
 
     return(
-        <div>
-            <button onClick={()=>setwidjetVisibility(true)}>Sign up with Facebook</button>
-
-            {widjetVisibility ?
+        <div className='d-flex flex-row align-items-center'>
                 <div>
                     <FacebookLogin
                         appId="942739773232091"
@@ -43,9 +39,8 @@ const FbRegistration = (props) => {
                         fields="name,email,picture,first_name,last_name"
                         callback={responseFacebook}
                     />
-                    <button onClick={()=>setwidjetVisibility(false)}>Close</button>
-                </div> : null}
-
+                    <button className="btn btn-sm btn-secondary ml-2" onClick={()=>props.setFbWidjetVisibility(false)}>Close</button>
+                </div>
         </div>
     )
 }

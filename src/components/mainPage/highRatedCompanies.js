@@ -14,8 +14,10 @@ const HighRatedCompanies = (props) => {
 
     return(
         <div className={'highRatedCompaniesContainer'}>
-            <h3 className={'highRatedCompaniesContainerHeader'}>The most rated campaigns</h3>
-            {companiesArray}
+            <h3 className={'highRatedCompaniesContainerHeader mb-3'}>The most rated campaigns</h3>
+            <div className='compaignsContentContainer'>
+                {companiesArray}
+            </div>
         </div>
     )
 }

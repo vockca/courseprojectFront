@@ -17,6 +17,7 @@ const AdminPage = (props) => {
 
         const ResponseJSON = await response.json();
         //make a way to cover the answer if user not authorized
+        console.log(ResponseJSON.msg);
         if (ResponseJSON.data) {
             setUsersInfo(ResponseJSON.data);
             setIsDataFetched(true);
@@ -72,8 +73,14 @@ const AdminPage = (props) => {
         getUsersInfo();
     }, []);
 
-    const userRows = usersInfo.map((item) => {
-        console.log(item);
+    const dataRows = usersInfo.filter(item => {
+         return !(item['user_login'] === localStorage.getItem('LOGIN'))
+
+
+    })
+    console.log(dataRows);
+
+    const userRows = dataRows.map((item) => {
         return (
             <tr key={item['user_id']}>
                 <td><Link to={`/profile/${item['user_login']}`}>{item['user_login']}</Link></td>

@@ -10,11 +10,7 @@ const EditableInputComponent = (props) => {
                            className={props.inputClassName}
                            labelClassName={props.inputClassName}
                            inputClassName={props.inputClassName}
-                           inputWidth='200px'
-                           inputHeight='25px'
                            inputMaxLength={50}
-                           labelFontWeight='bold'
-                           inputFontWeight='bold'
                            onFocus={props.onFocus}
                            onFocusOut={props.onFocusOut}
             />

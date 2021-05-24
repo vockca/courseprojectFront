@@ -14,20 +14,23 @@ const MyTextInput = ({ label, ...props }) => {
     const [field, meta] = useField(props);
 
     return (
-        <>
-            <label htmlFor={props.id || props.name}>{label}</label>
-            <input className="text-input" {...field} {...props} />
+        <div className='form-input-group'>
+            <label className="form-label" htmlFor={props.id || props.name}>{label}</label>
+            <input className="text-input form-input form-control" {...field} {...props} />
             {meta.touched && meta.error ? (
                 <div className="error">{meta.error}</div>
             ) : null}
-        </>
+        </div>
     );
 };
 
 const SignupForm = (props) => {
     const history = useHistory();
 
-    const [serverMessage, setServerMessage] = useState(false)
+    const [serverMessage, setServerMessage] = useState(false);
+
+    const [fbWidjetVisibility, setFbWidjetVisibility] = useState(false);
+    const [vkWidjetVisibility, setVkWidjetVisibility] = useState(false);
 
     const showServerMessage = (msg, duration) => {
         setServerMessage(msg);
@@ -41,7 +44,7 @@ const SignupForm = (props) => {
     return(
         <div>
             <div className={"formContainers"}>
-                <h1>Registration</h1>
+                <h2 className='font-xl mt-4'>Registration</h2>
                 <Formik initialValues={{
                             login: "",
                             firstName: "",
@@ -74,7 +77,7 @@ const SignupForm = (props) => {
                         }}
 
                 >
-                    <Form>
+                    <Form className='mb-3'>
                         <MyTextInput
                             label="Login:"
                             name="login"
@@ -116,13 +119,23 @@ const SignupForm = (props) => {
                             type="password"
                             placeholder=""
                         />
-                        <button type={'Submit'}>Register</button>
+                        <div className='d-flex flex-row mt-4'>
+                            <button className="btn btn-sm btn-primary" type={'Submit'}>Register</button>
+                            <button onClick={()=>setVkWidjetVisibility(true)} className="btn btn-sm btn-primary ml-2" type={'button'}>Sign up with VK</button>
+                            <button onClick={()=>setFbWidjetVisibility(true)} className="btn btn-sm btn-primary ml-2" type={'button'}>Sign up with FB</button>
+                        </div>
                     </Form>
                 </Formik>
 
-                <VkRegistration redirectToLogIn={redirectToLogIn} showServerMessage={(msg, duration) => showServerMessage(msg, duration)}/>
+                {vkWidjetVisibility && <VkRegistration setVkWidjetVisibility={setVkWidjetVisibility}
+                                                       redirectToLogIn={redirectToLogIn}
+                                                       showServerMessage={(msg, duration) => showServerMessage(msg, duration)}
+                                        />}
 
-                <FbRegistration redirectToLogIn={redirectToLogIn} showServerMessage={(msg, duration) => showServerMessage(msg, duration)}/>
+                {fbWidjetVisibility && <FbRegistration setFbWidjetVisibility={setFbWidjetVisibility}
+                                                       redirectToLogIn={redirectToLogIn}
+                                                       showServerMessage={(msg, duration) => showServerMessage(msg, duration)}
+                                        />}
         </div>
             {serverMessage ? <ServerMsgHandler text={serverMessage}>{serverMessage}</ServerMsgHandler> : null}
     </div>

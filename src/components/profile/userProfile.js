@@ -5,6 +5,7 @@ import CreateCampaignForm from "../createCampaign/createCampaign";
 import {Link} from "react-router-dom";
 import {ServerAddress} from "../../serverAddress/serverAdress";
 import PersonalDataStatic from "./personalDataStatic";
+import PersonalCampaigns from "./personalCampaigns";
 
 const UserProfile = (props) => {
     const [userObject, setUserObject] = useState({});
@@ -36,8 +37,13 @@ const UserProfile = (props) => {
         <div>
             {isDataFetched ?
                 <div>
-                    <Link to={`/profile/${login}/personal`}>Personal Data</Link>
-                    <Link to={`/profile/${login}/createCampaign`}>Create Campaign</Link>
+                    <div className='d-flex flex-row'>
+                    <Route path={`/profile/${login}/`}>
+                        <Link className='btn btn-primary btn-sm' to={`/profile/${login}/personal`}><div>Personal Data</div></Link>
+                        <Link className='btn btn-primary btn-sm ml-1' to={`/profile/${login}/createCampaign`}><div>Create Campaign</div></Link>
+                        <Link className='btn btn-primary btn-sm ml-1' to={`/profile/${login}/personalCampaigns`}><div>{`${login}'s Campaigns`}</div></Link>
+                    </Route>
+                    </div>
 
                     <Route path={`/profile/${login}/personal`}>
                         {isEditable ?
@@ -45,6 +51,11 @@ const UserProfile = (props) => {
                             : <PersonalDataStatic key={login} userInfo={userObject}/>
                         }
                     </Route>
+
+                    <Route path={`/profile/${login}/personalCampaigns`}>
+                        <PersonalCampaigns login={login} userInfo={userObject}/>
+                    </Route>
+
                     <Route path={`/profile/${login}/createCampaign`}>
                         <CreateCampaignForm login={login} userInfo={userObject}/>
                     </Route>

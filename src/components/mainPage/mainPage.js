@@ -5,7 +5,7 @@ import HighRatedCompanies from "./highRatedCompanies";
 
 import "./mainPage.css";
 import {Route} from "react-router-dom";
-import CampaignDetails from "./campaignDetails";
+import CampaignDetails from "../campaignDetails/campaignDetails";
 import {ServerAddress} from "../../serverAddress/serverAdress";
 
 //check if it useful to use this kind of functions instead of just raw fetching
@@ -60,9 +60,6 @@ const MainPage = (props) => {
         setShownContent(content.filter((item) => {
             let isContain = false;
             item['campaign_tags'].split(',').forEach(item => {
-                // console.log(item);
-                // console.log(tags);
-                // console.log(tags.includes(item));
                 if(tags.includes(item)) {
                     isContain = true;
                 }
@@ -79,8 +76,10 @@ const MainPage = (props) => {
 
             <Route exact path={'/MainPage'}>
                 <TagsCloud toggleTag={toggleTag} clearTags={clearTags} />
-                <LatestCompanies contentArray={shownContent}>latest companies</LatestCompanies>
-                <HighRatedCompanies contentArray={shownContent}>high rated companies</HighRatedCompanies>
+                <div className='d-flex justify-content-between mt-3'>
+                    <LatestCompanies contentArray={shownContent}>latest companies</LatestCompanies>
+                    <HighRatedCompanies contentArray={shownContent}>high rated companies</HighRatedCompanies>
+                </div>
             </Route>
 
             <Route path={'/MainPage/campaignDetails'}>

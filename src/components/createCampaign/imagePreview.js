@@ -11,7 +11,7 @@ const ImagePreview = (props) => {
 
     return(
         <div className={'imagePreviews'}>
-            {content}
+            {content.length && content}
         </div>
     )
 }

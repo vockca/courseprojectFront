@@ -13,9 +13,11 @@ const LatestCompanies = (props) => {
     })
 
     return(
-        <div className={'latestCompaniesContainer'}>
-            <h3 className={'latestCompaniesContainerHeader'}>Recently updated campaigns</h3>
-            {companiesArray}
+        <div className='latestCompaniesContainer d-flex flex-column'>
+            <h3 className='latestCompaniesContainerHeader mb-3'>Recently updated campaigns</h3>
+            <div className='compaignsContentContainer'>
+                {companiesArray}
+            </div>
         </div>
     )
 }

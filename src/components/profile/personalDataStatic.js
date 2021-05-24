@@ -16,21 +16,21 @@ const PersonalDataStatic = (props) => {
     return (
         <div>
             {userObject ?
-                <form>
-                    <div className={'profileContainers'}>
-                        <span>Login: </span> <span>{userObject['user_login']}</span>
+                <form className='d-flex flex-column align-items-start mt-3'>
+                    <div className={'profileContainers form-input-group'}>
+                        <div className="form-label">Login: </div> <div className="form-input form-control">{userObject['user_login']}</div>
                     </div>
 
-                    <div className={'profileContainers'}>
-                        <span>Name: </span> <span>{userObject['user_firstname']}</span>
+                    <div className={'profileContainers form-input-group'}>
+                        <div className="form-label">Name: </div> <div className="form-input form-control">{userObject['user_firstname']}</div>
                     </div>
 
-                    <div className={'profileContainers'}>
-                        <span>Surname: </span> <span>{userObject['user_lastname']}</span>
+                    <div className={'profileContainers form-input-group'}>
+                        <div className="form-label">Surname: </div> <div className="form-input form-control">{userObject['user_lastname']}</div>
                     </div>
 
-                    <div className={'profileContainers'}>
-                        <span>Email: </span> <span>{userObject['user_email']}</span>
+                    <div className={'profileContainers form-input-group'}>
+                        <div className="form-label">Email: </div> <div className="form-input form-control">{userObject['user_email']}</div>
                     </div>
                     {/*//bonuses tba*/}
                 </form> : null}

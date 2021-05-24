@@ -1,12 +1,12 @@
 .imagePreviews {
-    display: flex;
     width: inherit;
     height: 200px;
-    border: solid black 2px;
-    border-radius: 2px;
 }
 .imagePreviews > img {
     max-width: 300px;
+}
+label {
+    color: black;
 }
 
 .imgDrop {

@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import  {Formik, Form, useField} from "formik";
 
 import {ServerAddress} from "../../serverAddress/serverAdress";
@@ -16,23 +16,9 @@ const MyTextInput = ({ label, ...props }) => {
     const [field, meta] = useField(props);
 
     return (
-        <>
-            <label htmlFor={props.id || props.name}>{label}</label>
-            <input className="text-input" {...field} {...props} />
-            {meta.touched && meta.error ? (
-                <div className="error">{meta.error}</div>
-            ) : null}
-        </>
-    );
-};
-
-
-const MySelect = ({ label, ...props }) => {
-    const [field, meta] = useField(props);
-    return (
-        <div>
-            <label htmlFor={props.id || props.name}>{label}</label>
-            <select {...field} {...props} />
+        <div className='form-input-group'>
+            <label className="form-label" htmlFor={props.id || props.name}>{label}</label>
+            <input className="form-input form-control" {...field} {...props} />
             {meta.touched && meta.error ? (
                 <div className="error">{meta.error}</div>
             ) : null}
@@ -40,13 +26,52 @@ const MySelect = ({ label, ...props }) => {
     );
 };
 
+
+const MySelect = ({ label, ...props }) => {
+    const [field, meta] = useField(props);
+    return (
+        <div className='form-input-group'>
+            <label className="form-label" htmlFor={props.id || props.name}>{label}</label>
+            <select className="form-input form-control"  {...field} {...props} />
+            {meta.touched && meta.error ? (
+                <div className="error">{meta.error}</div>
+            ) : null}
+        </div>
+    );
+};
+
+const MyTextAreaInput = ({ label, ...props }) => {
+    // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
+    // which we can spread on <input>. We can use field meta to show an error
+    // message if the field is invalid and it has been touched (i.e. visited)
+    const [field, meta] = useField(props);
+    return (
+        <div className='form-input-group'>
+            <label className="form-label" htmlFor={props.id || props.name}>{label}</label>
+            <textarea className="form-input form-control" {...field} {...props} />
+            {meta.touched && meta.error ? (
+                <div className="error">{meta.error}</div>
+            ) : null}
+        </div>
+    );
+};
+
+
 const CreateCampaignForm = (props) => {
     const [serverMessage, setServerMessage] = useState(false);
     const [tagsArr, setTagsArr] = useState([]);
-
     const [imgsURL, setImgsURL] = useState([]);
+    const [tagsWhiteList, setTagsWhiteList] = useState([]);
     const history = useHistory();
 
+    useEffect(async () => {
+        const response = await fetch(`${ServerAddress.address}/tags`);
+        const tags = await response.json();
+
+        setTagsWhiteList(tags.data.map(item => {
+            return item['campaign_tags'];
+        }));
+    }, []);
 
     const showServerMessage = (msg, duration) => {
         setServerMessage(msg);
@@ -58,7 +83,7 @@ const CreateCampaignForm = (props) => {
             {serverMessage && <ServerMsgHandler text={serverMessage}>{serverMessage}</ServerMsgHandler>}
 
             <div className={"formContainers"}>
-                <h1>Create Campaign</h1>
+                <h1 className='font-xl mt-4'>Create Campaign</h1>
                 <Formik initialValues={{
                     campaignName: "",
                     bonuses: "",
@@ -66,7 +91,6 @@ const CreateCampaignForm = (props) => {
                     campaignVideo: "",
                     moneyAmount: "",
                     campaignInfo: "",
-                    campaignPictures: "",
                     tags: "",
                 }}
                         validationSchema={CreateCampaignValidation.validationScheme}
@@ -85,7 +109,6 @@ const CreateCampaignForm = (props) => {
                                 },
                                 body: JSON.stringify(objToSend),
                             });
-
                             let jsonResponse = await response.json();
 
                             showServerMessage(jsonResponse.msg, 2000);
@@ -138,63 +161,61 @@ const CreateCampaignForm = (props) => {
                             placeholder=""
                         />
 
-                        <MyTextInput
-                            label="campaignPictures:"
-                            name="campaignPictures"
-                            type="text"
-                            placeholder=""
-                        />
+                        <div className='form-input-group'>
+                            <label className="form-label" htmlFor={'tags'}>Tags</label>
+                            <Tags
+                                settings={{
+                                    placeholder: 'Write some tags',
+                                    delimiters: " ",
+                                    trim: true,
+                                }}
+                                name={'tags'}
+                                className="form-input"
+                                whitelist={tagsWhiteList}
+                                onChange={ e => {
+                                    setTagsArr(JSON.parse(e.detail.value).map(item => {
+                                        return item.value;
+                                    }));
+                                } }
+                            />
+                        </div>
 
-                        <label htmlFor={'tags'}>Tags</label>
-                        <Tags
-                            settings={{
-                                placeholder: 'Write some tags...',
-                                delimiters: " ",
-                                trim: true,
-                            }}
-                            name={'tags'}
-                            className={'input'}
-                            whitelist={[]}
-                            onChange={ e => {
-                                setTagsArr(JSON.parse(e.detail.value).map(item => {
-                                    return item.value;
-                                }));
-                            } }
-                        />
-
-                        <MyTextInput
+                        <MyTextAreaInput
                             label="Campaign Info:"
                             name="campaignInfo"
                             type="textarea"
                             placeholder=""
                         />
 
-                        <button type={'Submit'}>Create</button>
+                        <div className='form-input-group'>
+                            <label className='form-label'>Images</label>
+                            <FileDrop
+                                onDrop={ async (files, event) => {
+                                    let reader = new FileReader();
+
+                                    reader.readAsDataURL(files[files.length-1]);
+                                    reader.onloadend = async () => {
+                                        let response = await fetch(`${ServerAddress.address}/images`, {
+                                            method: 'POST',
+                                            body: JSON.stringify({data: reader.result}),
+                                            headers: {'Content-Type': 'application/json'},
+                                        });
+
+                                        let jsonResponse = await response.json();
+
+                                        setImgsURL([...imgsURL, jsonResponse.url]);
+                                    };
+                                }}
+                            >
+                                Drop some images here!
+                            </FileDrop>
+                        </div>
+
+                        <div className='mt-3'>
+                            <button className='btn btn-sm btn-primary' type={'Submit'}>Create</button>
+                        </div>
                     </Form>
                 </Formik>
-            </div>
-
-            <div style={{ border: '1px solid black', width: 600, color: 'black', padding: 20 }}>
-
-                <FileDrop
-                    onDrop={ async (files, event) => {
-                        let reader = new FileReader();
-                        reader.readAsDataURL(files[files.length-1]);
-                        reader.onloadend = async () => {
-                            let response = await fetch(`${ServerAddress.address}/images`, {
-                                method: 'POST',
-                                body: JSON.stringify({data: reader.result}),
-                                headers: {'Content-Type': 'application/json'},
-                            });
-
-                            let jsonResponse = await response.json();
-
-                            setImgsURL([...imgsURL, jsonResponse.url]);
-                        };
-                    }}
-                >
-                    Drop some images here!
-                </FileDrop>
             </div>
 
             {imgsURL.length>0 && (

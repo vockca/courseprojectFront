@@ -7,10 +7,14 @@
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
     "@yaireo/tagify": "^4.1.2",
+    "ag-grid-community": "^25.2.1",
+    "ag-grid-react": "^25.2.0",
+    "bootstrap": "^4.6.0",
     "cloudinary-react": "^1.7.0",
     "formik": "^2.2.6",
     "get-video-id": "^3.2.0",
     "react": "^17.0.2",
+    "react-bootstrap": "^1.6.0",
     "react-dom": "^17.0.2",
     "react-facebook-login": "^4.1.1",
     "react-file-drop": "^3.1.2",
@@ -50,6 +54,8 @@
     ]
   },
   "devDependencies": {
+    "@material-ui/core": "^4.11.4",
+    "@material-ui/lab": "^4.0.0-alpha.58",
     "prop-types": "^15.7.2"
   }
 }

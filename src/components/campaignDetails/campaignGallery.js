@@ -8,7 +8,6 @@ const CampaignGallery = (props) => {
         )
     })
 
-
     return(
         <div className={'campaignGallery'}>
             {content}

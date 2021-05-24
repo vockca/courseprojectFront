@@ -7,9 +7,23 @@
 }
 
 .serverMessage {
+    z-index: 1;
+    background-color: grey;
     position: fixed;
     left: 40%;
     top: 30%;
     width: 600px;
     height: 400px;
 }
+
+textarea {
+    width: 700px;
+    height: 150px;
+}
+
+img {
+    width:350px;
+    height:  200px;
+}
+
+

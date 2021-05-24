@@ -34,13 +34,13 @@ const PersonalData = (props) => {
     return (
         <div>
             {userObject ?
-                <form>
+                <form className='d-flex flex-column align-items-start mt-3'>
                     <EditableInputComponent
                         text={userObject['user_login']}
                         label={'Login'}
-                        inputClassName={'profileInputs'}
-                        labelClassName={'profileLabels'}
-                        containerClassName={'profileContainers'}
+                        inputClassName="form-input form-control"
+                        labelClassName="form-label"
+                        className={'profileContainers form-input-group'}
                         onFocusOut={(login) => {
                             userObject['user_login'] = login;
                             sendUpdatedUser(userObject);
@@ -50,9 +50,9 @@ const PersonalData = (props) => {
                     <EditableInputComponent
                         text={userObject['user_firstname']}
                         label={'Name'}
-                        inputClassName={'profileInputs'}
-                        labelClassName={'profileLabels'}
-                        containerClassName={'profileContainers'}
+                        inputClassName="form-input form-control"
+                        labelClassName="form-label"
+                        className={'profileContainers form-input-group'}
                         onFocusOut={(firstname) => {
                             userObject['user_firstname'] = firstname;
                             sendUpdatedUser(userObject);
@@ -62,9 +62,9 @@ const PersonalData = (props) => {
                     <EditableInputComponent
                         text={userObject['user_lastname']}
                         label={'Surname'}
-                        inputClassName={'profileInputs'}
-                        labelClassName={'profileLabels'}
-                        containerClassName={'profileContainers'}
+                        inputClassName="form-input form-control"
+                        labelClassName="form-label"
+                        className={'profileContainers form-input-group'}
                         onFocusOut={(lastname) => {
                             userObject['user_lastname'] = lastname;
                             sendUpdatedUser(userObject);
@@ -74,9 +74,9 @@ const PersonalData = (props) => {
                     <EditableInputComponent
                         text={userObject['user_email']}
                         label={'Email'}
-                        inputClassName={'profileInputs'}
-                        labelClassName={'profileLabels'}
-                        containerClassName={'profileContainers'}
+                        inputClassName="form-input form-control"
+                        labelClassName="form-label"
+                        className={'profileContainers form-input-group'}
                         onFocusOut={(email) => {
                             userObject['user_email'] = email;
                             sendUpdatedUser(userObject);

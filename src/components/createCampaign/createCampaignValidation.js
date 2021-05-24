@@ -24,8 +24,5 @@ export const CreateCampaignValidation = {
             .max(15, 'Not that long')
             .min(5, 'Must be 5 characters or more')
             .required('Required'),
-        campaignPictures: Yup.string()
-            .max(1000, 'Not that long')
-            .required('Required'),
     }),
 }

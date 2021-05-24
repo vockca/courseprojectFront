@@ -22,8 +22,12 @@ const TagsCloud = (props) => {
                 return item['campaign_tags'].split(',');
             }).flat();
 
+            let uniqTagsArray = flatTagsArray.filter((item, index, arr) => {
+                return arr.indexOf(item) === index;
+            })
 
-            setTags(flatTagsArray.map((item,index) => {
+
+            setTags(uniqTagsArray.map((item,index) => {
                 return {value: item, count: index}
             }));
 
@@ -47,7 +51,7 @@ const TagsCloud = (props) => {
                         props.toggleTag(tag.value);
                     }}
                     />
-                    <button onClick={() => props.clearTags()}>Clear all Selected Tags</button>
+                    <button className='btn btn-sm btn-outline-danger' onClick={() => props.clearTags()}>Clear all Selected Tags</button>
             </div> : null}
         </div>
     )

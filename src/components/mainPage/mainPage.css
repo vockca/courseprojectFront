@@ -1,18 +1,31 @@
 .mainContainer {
-    border: saddlebrown solid 2px;
+}
+
+/*.campaignContainers:not(:first-child) {*/
+/*    margin-top: 2.5rem;*/
+/*}*/
+
+.compaignsContentContainer > .campaignContainers:not(:first-child){
+    margin-top: 2.5rem;
 }
 
 .campaignContainers {
-    border: black solid 2px;
+    background-color: rgba(237, 237, 237, 0.3);
+    padding: 1rem 0.75rem 1rem 0.75rem;
 }
 
+.campaignContainers:hover {
+    background-color: rgba(224, 224, 224, 0.3);
+    cursor: pointer;
+}
+
+
 .highRatedCompaniesContainer {
-    display: inline-block;
-    width: 50%;
+    margin-left: 2rem;
+    width: calc(50% - 2rem);
 }
 
 .latestCompaniesContainer {
-    display: inline-block;
     width: 50%;
 }
 
@@ -34,7 +47,7 @@
 
 .campaignGallery > img {
     height: inherit;
-    width: 100%;
+    width: 400px;
 }
 .tagsShowers {
     border: none !important;
